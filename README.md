@@ -177,7 +177,7 @@ The rclone copy command in the previous section can be implemented as a cron job
 According to the man page for flock, we can use a one-liner flock command to implement our rclone backup.
 
 ```bash
-flock -n /tmp/sftp_sync.lock /usr/bin/rclone sync "/home/server/Dropbox/Dirk ebooks" "kitabu:books"
+flock -n /tmp/sftp_sync.lock /usr/bin/rclone sync "/home/server/Dropbox/Dirk ebooks" "kitabu:books" >> /var/log/rsync-kitabu.log 2>&1
 ```
 
 The above flock command will create the file sftp_sync_sync.lock (if it does not already exist) and acquire an exclusive (write) lock on the file for the duration of the rclone backup. The -n option tells flock that in the case where the lock cannot be acquired (i.e. previous backup is still running), exit immediately with return code 1 (i.e. do not wait for lock to be released).
